@@ -54,6 +54,11 @@
   .subtitle{font-family:'Cormorant Garamond',serif;font-size:clamp(1.15rem,3vw,1.7rem);letter-spacing:.18em;text-transform:uppercase;color:var(--gold-hi)}
   .when{margin-top:20px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-size:.85rem}
 
+  .when.times{color:var(--gold-hi);letter-spacing:.1em;font-size:.82rem}
+  .logos{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 30px;margin:38px auto 0;max-width:780px}
+  .logos img{height:46px;width:auto;max-width:170px;object-fit:contain;opacity:.92}
+  .logos .lg{font-family:'Cormorant Garamond',serif;font-size:1.05rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-hi);padding:7px 16px;border:1px solid var(--line);border-radius:2px}
+  .logos .lg.tbd2{border-style:dashed;color:var(--muted)}
   .welcome{margin:42px auto 0;max-width:640px;padding:28px 30px;border:1px solid var(--line);border-radius:4px;background:linear-gradient(180deg,rgba(214,176,98,.07),rgba(214,176,98,.015))}
   .welcome h3{font-family:'Cormorant Garamond',serif;font-size:1.05rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:12px}
   .welcome p{font-family:'Cormorant Garamond',serif;font-size:1.28rem;line-height:1.6;color:var(--text)}
@@ -205,12 +210,15 @@
     <div class="divider rise" style="animation-delay:1.2s"><i>✦</i></div>
     <p class="subtitle rise" style="animation-delay:1.4s">Holiday Dinner &amp; Awards Gala</p>
     <p class="when rise" style="animation-delay:1.6s" id="whenLine"></p>
+    <p class="when times rise" style="animation-delay:1.7s;margin-top:6px" id="timesLine"></p>
 
     <div class="welcome rise" style="animation-delay:1.9s">
       <h3>A Word From Our CEO</h3>
       <p id="ceoMessage"></p>
       <p class="sig" id="ceoSig"></p>
     </div>
+
+    <div class="logos rise" style="animation-delay:2.1s" id="logos" aria-label="Presented by"></div>
 
     <div class="countdown rise" style="animation-delay:2.2s" id="countdown" aria-label="Countdown to the event">
       <div class="cd"><b id="cdD">--</b><span>Days</span></div>
@@ -229,6 +237,7 @@
     <div class="panel reveal">
       <h3>The Venue</h3>
       <div class="label">Address</div><p id="venueName"></p><p id="venueAddr"></p>
+      <div class="label">Entrance</div><p id="entrance"></p>
       <div class="label">Arrival</div><p id="arrival"></p>
       <div class="label">Parking</div><p id="parking"></p>
       <div class="label">Dress Code</div><p id="dress"></p>
@@ -289,32 +298,42 @@
    ===================================================================== */
 const CONFIG = {
   // When the event starts (include the UTC offset; December in Toronto is -05:00)
-  eventStart: "2026-12-11T18:00:00-05:00",
-  eventDateText: "[TO CONFIRM: Friday, December 11, 2026]  ·  6:00 PM",
+  eventStart: "2026-12-16T18:00:00-05:00",
+  eventDateText: "Wednesday, December 16, 2026",
+  eventTimesText: "Dinner & Awards  6:00 – 9:30 PM   ·   Afterparty  9:30 PM – Midnight",
 
   // "Find Your Table" opens at 5:00 PM EST on the day of the event (no swapping tables)
-  tableUnlock: "2026-12-11T17:00:00-05:00",
+  tableUnlock: "2026-12-16T17:00:00-05:00",
 
   // CEO welcome address (Dany: waiting on copy from Jeff)
   ceoMessage: "[TO CONFIRM: Welcome message from Jeff goes here. A short, warm note thanking the team for the year and introducing the evening.]",
   ceoSignature: "Jeff",
 
   venue: {
-    name: "[TO CONFIRM: Venue name]",
-    address: "[TO CONFIRM: Street address, City, Province]",
-    mapQuery: "Toronto, Ontario",          // used for the map + directions button
-    arrival: "[TO CONFIRM: Doors open at 5:30 PM. Please arrive by 5:45 PM.]",
+    name: "Royal York Hotel, Canadian Ballroom",
+    address: "100 Front Street West, Toronto, Ontario",
+    mapQuery: "Fairmont Royal York, 100 Front Street West, Toronto, Ontario",          // used for the map + directions button
+    entrance: "The Canadian Ballroom has its own dedicated entrance. [TO CONFIRM: which door / street side to use]",
+    arrival: "[TO CONFIRM: Doors open time. Dinner & awards run 6:00 – 9:30 PM; afterparty 9:30 PM – midnight.]",
     parking: "[TO CONFIRM: Valet / underground parking details]",
     dress: "[TO CONFIRM: Black tie optional]"
   },
 
+  // Logo strip on the splash page. Add a file next to index.html and set src (e.g. "logos/range.png") to replace the text stand-in.
+  logos: [
+    { name: "Kensington Corporate", src: "assets/kensington-logo-cream.png" },
+    { name: "Range", src: "" },
+    { name: "TripArc", src: "" },
+    { name: "Insombo [TO CONFIRM spelling]", src: "" },
+    { name: "Kensington Travel", src: "" }
+  ],
+
   program: [
-    { time: "5:30 PM", title: "Doors Open & Welcome Reception", note: "[TO CONFIRM] Cocktails and canapés." },
+    { time: "6:00 PM", title: "Doors Open & Welcome Reception", note: "[TO CONFIRM] Cocktails and canapés. Dinner & awards begin." },
     { time: "6:30 PM", title: "Welcome Address", note: "[TO CONFIRM] Opening remarks from our CEO." },
     { time: "7:00 PM", title: "Dinner Service", note: "[TO CONFIRM] First and second courses." },
-    { time: "8:00 PM", title: "Awards Presentation", note: "[TO CONFIRM] Recognizing our 5 Year Anniversary honourees and more." },
-    { time: "9:00 PM", title: "Dessert & Celebration", note: "[TO CONFIRM] Music and dancing." },
-    { time: "11:00 PM", title: "Farewell", note: "[TO CONFIRM] Safe travels home." }
+    { time: "8:15 PM", title: "Awards Presentation", note: "[TO CONFIRM] Recognizing our 5 Year Anniversary honourees and more." },
+    { time: "9:30 PM", title: "Afterparty", note: "[TO CONFIRM] Music and dancing until midnight." }
   ],
 
   // Award categories. Names below are the sample list from Dany's draft; replace with the real lists.
@@ -350,6 +369,9 @@ const tbd = t => /^\[TO CONFIRM/i.test(t) ? `<span class="tbd">${esc(t)}</span>`
 
 /* ---------- fill content ---------- */
 $('#whenLine').innerHTML = tbd(CONFIG.eventDateText);
+$('#timesLine').innerHTML = tbd(CONFIG.eventTimesText);
+$('#logos').innerHTML = CONFIG.logos.map(l => l.src ? `<img src="${esc(l.src)}" alt="${esc(l.name)}">` : `<span class="lg tbd2" title="Logo file to come">${esc(l.name.replace(/\s*\[TO CONFIRM[^\]]*\]/i, ''))}</span>`).join('');
+$('#entrance').innerHTML = tbd(CONFIG.venue.entrance);
 $('#ceoMessage').innerHTML = tbd(CONFIG.ceoMessage);
 $('#ceoSig').textContent = CONFIG.ceoSignature;
 $('#venueName').innerHTML = `<b style="font-weight:500">${tbd(CONFIG.venue.name)}</b>`;
