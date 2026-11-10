@@ -34,7 +34,7 @@
   nav a.tab .n{color:var(--gold);margin-right:6px;font-family:'Cormorant Garamond',serif;font-size:.95rem}
 
   /* ---------- HERO / SPLASH ---------- */
-  #hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:calc(var(--nav-h) + 40px) 24px 80px;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#1a1409 0%,#070604 55%,#000 100%)}
+  #hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:calc(var(--nav-h) + 40px) 24px 130px;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#1a1409 0%,#070604 55%,#000 100%)}
   #sparkles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
   .ribbon{position:absolute;width:140%;left:-20%;pointer-events:none;opacity:.9}
   .ribbon.top{top:-6%;animation:drift 16s ease-in-out infinite alternate}
@@ -55,10 +55,17 @@
   .when{margin-top:20px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-size:.85rem}
 
   .when.times{color:var(--gold-hi);letter-spacing:.1em;font-size:.82rem}
-  .logos{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 30px;margin:38px auto 0;max-width:780px}
-  .logos img{height:46px;width:auto;max-width:170px;object-fit:contain;opacity:.92}
-  .logos .lg{font-family:'Cormorant Garamond',serif;font-size:1.05rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-hi);padding:7px 16px;border:1px solid var(--line);border-radius:2px}
-  .logos .lg.tbd2{border-style:dashed;color:var(--muted)}
+  .logos-wrap{margin:54px auto 0;max-width:1000px}
+  .logos-label{font-size:.72rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+  .logos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:stretch}
+  .logo-card{display:flex;align-items:center;justify-content:center;min-height:130px;padding:22px 26px;border:1px solid var(--line);border-radius:3px;background:linear-gradient(180deg,rgba(214,176,98,.07),rgba(214,176,98,.015));transition:border-color .35s,transform .35s}
+  .logo-card:hover{border-color:var(--gold);transform:translateY(-3px)}
+  .logo-card:first-child{grid-column:1/-1;min-height:170px}
+  .logo-card img{height:110px;width:auto;max-width:100%;object-fit:contain}
+  .logo-card:not(:first-child) img{height:80px}
+  .logo-card .lg{font-family:'Cormorant Garamond',serif;font-size:1.45rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);text-align:center;line-height:1.2}
+  .logo-card.tbd2{border-style:dashed}
+  .logo-card.tbd2 small{display:block;margin-top:6px;font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.3em;color:var(--gold-lo);text-align:center}
   .welcome{margin:42px auto 0;max-width:640px;padding:28px 30px;border:1px solid var(--line);border-radius:4px;background:linear-gradient(180deg,rgba(214,176,98,.07),rgba(214,176,98,.015))}
   .welcome h3{font-family:'Cormorant Garamond',serif;font-size:1.05rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:12px}
   .welcome p{font-family:'Cormorant Garamond',serif;font-size:1.28rem;line-height:1.6;color:var(--text)}
@@ -165,6 +172,10 @@
     nav{justify-content:flex-start;overflow-x:auto;gap:0;padding:0 8px}
     nav a.tab{white-space:nowrap;padding:10px 11px;font-size:.7rem;letter-spacing:.1em}
     .grid2{grid-template-columns:1fr}
+    .logos{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .logo-card img{height:84px}
+    .logo-card:not(:first-child) img{height:60px}
+    .logo-card .lg{font-size:1.15rem}
     .timeline::before{left:78px}
     .ev{grid-template-columns:62px 1fr;gap:34px}
     .ev::before{left:73px}
@@ -218,7 +229,7 @@
       <p class="sig" id="ceoSig"></p>
     </div>
 
-    <div class="logos rise" style="animation-delay:2.1s" id="logos" aria-label="Presented by"></div>
+    <div class="logos-wrap rise" style="animation-delay:2.1s"><div class="logos-label">Presented by</div><div class="logos" id="logos" aria-label="Presented by"></div></div>
 
     <div class="countdown rise" style="animation-delay:2.2s" id="countdown" aria-label="Countdown to the event">
       <div class="cd"><b id="cdD">--</b><span>Days</span></div>
@@ -370,7 +381,9 @@ const tbd = t => /^\[TO CONFIRM/i.test(t) ? `<span class="tbd">${esc(t)}</span>`
 /* ---------- fill content ---------- */
 $('#whenLine').innerHTML = tbd(CONFIG.eventDateText);
 $('#timesLine').innerHTML = tbd(CONFIG.eventTimesText);
-$('#logos').innerHTML = CONFIG.logos.map(l => l.src ? `<img src="${esc(l.src)}" alt="${esc(l.name)}">` : `<span class="lg tbd2" title="Logo file to come">${esc(l.name.replace(/\s*\[TO CONFIRM[^\]]*\]/i, ''))}</span>`).join('');
+$('#logos').innerHTML = CONFIG.logos.map(l => l.src
+  ? `<div class="logo-card"><img src="${esc(l.src)}" alt="${esc(l.name)}"></div>`
+  : `<div class="logo-card tbd2"><div><span class="lg">${esc(l.name.replace(/\s*\[TO CONFIRM[^\]]*\]/i, ''))}</span><small>LOGO TO COME</small></div></div>`).join('');
 $('#entrance').innerHTML = tbd(CONFIG.venue.entrance);
 $('#ceoMessage').innerHTML = tbd(CONFIG.ceoMessage);
 $('#ceoSig').textContent = CONFIG.ceoSignature;
