@@ -2,7 +2,7 @@
 
 Single-page site for the Range Holiday Dinner & Awards Gala (Wed Dec 16, 2026, Fairmont Royal York, Canadian Ballroom).
 
-Live preview: https://nehmandevelops.github.io/range-gala/
+Live site: https://range-gala.vercel.app (Vercel project `range-gala`, deploys on every push to main; GitHub Pages turned off 2026-11-13). `.vercelignore` keeps `site.html` and `tools/` from ever being uploaded.
 
 ## Working on it
 ```
@@ -16,5 +16,5 @@ node serve.js          # then open http://localhost:8130   (or just double-click
 - Everything editable lives in the `CONFIG` block at the top of the script in `site.html` (date/times, venue, logos, program, awards, menu, tables). Search for `[TO CONFIRM` to find placeholders still waiting on real info.
 - Logos (Range, Ensemble, Kensington, Travel Edge, in Dany's order) are in `assets/logo-*.png`, cut from the invite's logo strip. Event details come from Michelle Singh's invite email (forwarded by Dany 2026-11-10).
 - `?unlock=1` on the URL previews the "Find Your Table" tab before event day (it unlocks Dec 16, 5:00 PM ET).
-- Publish: `git add -A && git commit -m "..." && git push` (GitHub Pages rebuilds in about a minute).
+- Publish: seal, then commit `index.html` and push (Vercel redeploys in seconds).
 - Needs no build step and no dependencies.
