@@ -1,2 +1,5 @@
 site.html
 node_modules/
+
+.vercel
+.env*.local

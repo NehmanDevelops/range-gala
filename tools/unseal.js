@@ -1,7 +1,7 @@
 // Decrypts the published index.html back into site.html for editing.  SEAL_PASSWORD=... node tools/unseal.js
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const root = path.join(__dirname, '..');
-const pw = process.env.SEAL_PASSWORD;
+const pw = (process.env.SEAL_PASSWORD || '').trim().toLowerCase();
 if (!pw) { console.error('Set SEAL_PASSWORD'); process.exit(1); }
 const gate = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const p = JSON.parse(gate.match(/const PAYLOAD = (\{.*?\});/s)[1]);

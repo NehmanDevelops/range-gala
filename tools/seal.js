@@ -5,7 +5,7 @@
 // To edit: SEAL_PASSWORD=... node tools/unseal.js  -> writes site.html, edit it, then seal again.
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const root = path.join(__dirname, '..');
-const pw = process.env.SEAL_PASSWORD;
+const pw = (process.env.SEAL_PASSWORD || '').trim().toLowerCase();   // not case sensitive: the gate lowercases what guests type
 if (!pw) { console.error('Set SEAL_PASSWORD'); process.exit(1); }
 const html = fs.readFileSync(path.join(root, 'site.html'), 'utf8');
 const salt = crypto.randomBytes(16), iv = crypto.randomBytes(12), iter = 310000;

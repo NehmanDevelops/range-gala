@@ -23,7 +23,7 @@
 </head>
 <body>
 <main class="gate">
-  <img src="assets/gala-banner.jpg" alt="You're invited to the Range 2026 Holiday Dinner & Awards Gala">
+  <img src="assets/gala-banner.jpg" alt="Range 2026 Holiday Dinner & Awards Gala">
   <h1>Guest Access</h1>
   <p>Please enter the event password to continue.</p>
   <form id="f" autocomplete="off">
@@ -56,7 +56,7 @@ async function tryOpen(pw, silent) {
 document.getElementById('f').addEventListener('submit', async e => {
   e.preventDefault();
   const btn = document.getElementById('go'); btn.disabled = true; document.getElementById('err').textContent = '';
-  const ok = await tryOpen(document.getElementById('pw').value, false);
+  const ok = await tryOpen(document.getElementById('pw').value.trim().toLowerCase(), false);   // password is not case sensitive
   if (!ok) btn.disabled = false;
 });
 (async () => { let s = null; try { s = sessionStorage.getItem('rg_pw'); } catch (e) {} if (s) await tryOpen(s, true); })();
